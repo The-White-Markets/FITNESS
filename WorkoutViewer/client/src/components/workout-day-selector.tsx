@@ -47,13 +47,13 @@ export function WorkoutDaySelector({ workoutDays, selectedWorkoutDayId, onSelect
 }
 
 function getExerciseCount(dayNumber: number): number {
-  // Based on the CSV data structure
+  // Based on the new CSV data structure
   switch (dayNumber) {
-    case 1: return 8;
-    case 2: return 7;
-    case 3: return 7;
-    case 4: return 7;
-    case 5: return 7;
+    case 1: return 5; // Push Day - 5 exercises
+    case 2: return 4; // Pull Day - 4 exercises
+    case 3: return 4; // Core Day - 4 exercises
+    case 4: return 5; // Upper Body - 5 exercises
+    case 5: return 5; // Lower Body - 5 exercises
     default: return 0;
   }
 }

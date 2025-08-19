@@ -72,22 +72,43 @@ export class MemStorage implements IStorage {
       { workoutDayId: "67ef2d59-2f56-4f8a-87d6-2b1e3ed2a9f1", name: "Side Plank", sets: 3, reps: "20-30 sec per side", rpe: "RPE 8", progressionRule: "Increase time", videoUrl: "https://www.youtube.com/watch?v=K2VljzCC16g", order: 5, currentWeight: "Bodyweight" },
     ];
 
+    // Create workout days with specific IDs that match the exercise data
+    const workoutDayIds = {
+      "fcb6c14b-3b2b-44ef-a38a-0d7fa92262c5": "Push Day",
+      "f94a79c0-63e7-4e4f-9b4d-69b94379249d": "Pull Day", 
+      "9f606d0b-b72b-40b6-b09e-2725c1a12fa9": "Core Day",
+      "8a19f4dc-1b8c-4b84-86b6-107f7b8b31ec": "Upper Body",
+      "67ef2d59-2f56-4f8a-87d6-2b1e3ed2a9f1": "Lower Body"
+    };
+
     // Create workout days
-    workoutDaysData.forEach(dayData => {
-      const id = randomUUID();
-      const workoutDay: WorkoutDay = { ...dayData, id };
+    Object.entries(workoutDayIds).forEach(([id, title], index) => {
+      const focus = (() => {
+        switch (title) {
+          case "Push Day": return "Chest, Shoulders, Triceps";
+          case "Pull Day": return "Back, Biceps, Rear Delts";
+          case "Core Day": return "Abs and Core Stability";
+          case "Upper Body": return "Push/Pull Mix";
+          case "Lower Body": return "Legs and Core";
+          default: return "General Fitness";
+        }
+      })();
+      
+      const workoutDay: WorkoutDay = { 
+        id, 
+        dayNumber: index + 1, 
+        title, 
+        focus
+      };
       this.workoutDays.set(id, workoutDay);
     });
 
-    // Create exercises and assign to workout days
-    const workoutDayIds = Array.from(this.workoutDays.keys());
-    
-    // Create exercises using the new data structure
-    exercisesData.forEach((exerciseData, index) => {
+    // Create exercises using the correct workout day IDs
+    exercisesData.forEach((exerciseData) => {
       const id = randomUUID();
       const exercise: Exercise = {
         id,
-        workoutDayId: workoutDayIds[Math.floor(index / 5)], // Distribute exercises across 5 days
+        workoutDayId: exerciseData.workoutDayId, // Use the exact workoutDayId from CSV
         name: exerciseData.name,
         sets: exerciseData.sets,
         reps: exerciseData.reps,
