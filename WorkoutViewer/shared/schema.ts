@@ -20,6 +20,7 @@ export const exercises = pgTable("exercises", {
   progressionRule: text("progression_rule").notNull(),
   videoUrl: text("video_url").notNull(),
   currentWeight: text("current_weight"),
+  currentReps: jsonb("current_reps").default([]),
   lastWorkout: text("last_workout"),
   completedSets: jsonb("completed_sets").default([]),
   order: integer("order").notNull(),
