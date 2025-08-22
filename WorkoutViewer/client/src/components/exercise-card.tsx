@@ -84,27 +84,27 @@ export function ExerciseCard({ exercise, editMode, onUpdate }: ExerciseCardProps
 
   return (
     <Card className="exercise-card bg-primary-800 rounded-xl border border-gray-700 overflow-hidden hover:border-accent-blue transition-colors" data-testid={`exercise-card-${exercise.id}`}>
-      <div className="p-6">
-        <div className="flex justify-between items-start mb-4">
+      <div className="p-4 sm:p-6">
+        <div className="flex flex-col sm:flex-row justify-between items-start mb-4 space-y-3 sm:space-y-0">
           <div className="flex-1">
-            <h4 className="text-xl font-semibold text-white mb-2" data-testid={`exercise-name-${exercise.id}`}>
+            <h4 className="text-lg sm:text-xl font-semibold text-white mb-2" data-testid={`exercise-name-${exercise.id}`}>
               {exercise.name}
             </h4>
-            <div className="flex flex-wrap gap-2 mb-3">
+            <div className="flex flex-wrap gap-1 sm:gap-2 mb-3">
               {badges.map((badge, index) => (
-                <Badge key={index} className={`${badge.color} text-white px-3 py-1 rounded-full text-sm font-medium`}>
+                <Badge key={index} className={`${badge.color} text-white px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-medium`}>
                   {badge.label}
                 </Badge>
               ))}
             </div>
           </div>
           
-          <div className="flex space-x-2">
+          <div className="flex space-x-2 w-full sm:w-auto justify-center sm:justify-end">
             <Button
               variant="ghost"
               size="sm"
               onClick={() => setExpanded(!expanded)}
-              className="p-2 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors"
+              className="p-2 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors flex-1 sm:flex-none"
               data-testid={`toggle-details-${exercise.id}`}
             >
               {expanded ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
@@ -114,7 +114,7 @@ export function ExerciseCard({ exercise, editMode, onUpdate }: ExerciseCardProps
               variant="ghost"
               size="sm"
               asChild
-              className="p-2 bg-red-600 hover:bg-red-700 rounded-lg transition-colors"
+              className="p-2 bg-red-600 hover:bg-red-700 rounded-lg transition-colors flex-1 sm:flex-none"
               data-testid={`video-link-${exercise.id}`}
             >
               <a href={exercise.videoUrl} target="_blank" rel="noopener noreferrer">
@@ -125,36 +125,36 @@ export function ExerciseCard({ exercise, editMode, onUpdate }: ExerciseCardProps
         </div>
         
         {/* Quick Stats */}
-        <div className="grid grid-cols-3 gap-4 mb-4">
+        <div className="grid grid-cols-3 gap-2 sm:gap-4 mb-4">
           <div className="text-center">
-            <div className="text-2xl font-bold text-accent-blue" data-testid={`exercise-sets-${exercise.id}`}>
+            <div className="text-xl sm:text-2xl font-bold text-accent-blue" data-testid={`exercise-sets-${exercise.id}`}>
               {localExercise.sets}
             </div>
-            <div className="text-sm text-gray-400">Sets</div>
+            <div className="text-xs sm:text-sm text-gray-400">Sets</div>
           </div>
           <div className="text-center">
-            <div className="text-2xl font-bold text-accent-green" data-testid={`exercise-reps-${exercise.id}`}>
+            <div className="text-xl sm:text-2xl font-bold text-accent-green" data-testid={`exercise-reps-${exercise.id}`}>
               {localExercise.reps}
             </div>
-            <div className="text-sm text-gray-400">Reps</div>
+            <div className="text-xs sm:text-sm text-gray-400">Reps</div>
           </div>
           <div className="text-center">
-            <div className="text-2xl font-bold text-yellow-400" data-testid={`exercise-rpe-${exercise.id}`}>
+            <div className="text-xl sm:text-2xl font-bold text-yellow-400" data-testid={`exercise-rpe-${exercise.id}`}>
               {localExercise.rpe}
             </div>
-            <div className="text-sm text-gray-400">Intensity</div>
+            <div className="text-xs sm:text-sm text-gray-400">Intensity</div>
           </div>
         </div>
 
         {/* Current Settings Summary */}
         <div className="bg-primary-900 p-3 rounded-lg mb-4">
-          <div className="flex justify-between items-center text-sm">
+          <div className="flex justify-between items-center text-xs sm:text-sm">
             <span className="text-gray-400">Current Weight:</span>
             <span className="text-accent-blue font-medium">
               {localExercise.currentWeight || 'Not set'}
             </span>
           </div>
-          <div className="flex justify-between items-center text-sm mt-1">
+          <div className="flex justify-between items-center text-xs sm:text-sm mt-1">
             <span className="text-gray-400">Target Reps:</span>
             <span className="text-accent-green font-medium">
               {Array.from({ length: localExercise.sets }, (_, i) => 
@@ -193,44 +193,44 @@ export function ExerciseCard({ exercise, editMode, onUpdate }: ExerciseCardProps
         {/* Expandable Details */}
         {expanded && (
           <div className="exercise-details border-t border-gray-600 pt-4" data-testid={`exercise-details-${exercise.id}`}>
-            <div className="grid md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
               <div>
-                <h5 className="font-semibold mb-3 text-accent-blue">Current Settings</h5>
+                <h5 className="font-semibold mb-3 text-accent-blue text-sm sm:text-base">Current Settings</h5>
                 
                 <div className="space-y-3">
-                  <div className="flex justify-between items-center">
-                    <label className="text-sm text-gray-300">Sets:</label>
+                  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-2 sm:space-y-0">
+                    <label className="text-xs sm:text-sm text-gray-300">Sets:</label>
                     <Input
                       type="number"
                       value={localExercise.sets}
                       onChange={(e) => handleInputChange('sets', parseInt(e.target.value))}
                       disabled={!editMode}
-                      className="bg-primary-900 text-white px-3 py-1 rounded border border-gray-600 focus:border-accent-blue w-20 text-center"
+                      className="bg-primary-900 text-white px-3 py-2 rounded border border-gray-600 focus:border-accent-blue w-20 sm:w-24 text-center text-sm"
                       data-testid={`sets-input-${exercise.id}`}
                     />
                   </div>
                   
-                  <div className="flex justify-between items-center">
-                    <label className="text-sm text-gray-300">Rep Range:</label>
+                  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-2 sm:space-y-0">
+                    <label className="text-xs sm:text-sm text-gray-300">Rep Range:</label>
                     <Input
                       type="text"
                       value={localExercise.reps}
                       onChange={(e) => handleInputChange('reps', e.target.value)}
                       disabled={!editMode}
-                      className="bg-primary-900 text-white px-3 py-1 rounded border border-gray-600 focus:border-accent-blue w-20 text-center"
+                      className="bg-primary-900 text-white px-3 py-2 rounded border border-gray-600 focus:border-accent-blue w-20 sm:w-24 text-center text-sm"
                       data-testid={`reps-input-${exercise.id}`}
                     />
                   </div>
                   
-                  <div className="flex justify-between items-center">
-                    <label className="text-sm text-gray-300">Current Weight (all sets):</label>
+                  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-2 sm:space-y-0">
+                    <label className="text-xs sm:text-sm text-gray-300">Current Weight (all sets):</label>
                     <Input
                       type="text"
                       value={localExercise.currentWeight || ''}
                       onChange={(e) => handleWeightChange(e.target.value)}
                       placeholder="Add weight"
                       disabled={!editMode}
-                      className="bg-primary-900 text-white px-3 py-1 rounded border border-gray-600 focus:border-accent-blue w-24 text-center"
+                      className="bg-primary-900 text-white px-3 py-2 rounded border border-gray-600 focus:border-accent-blue w-24 sm:w-28 text-center text-sm"
                       data-testid={`weight-input-${exercise.id}`}
                     />
                   </div>
@@ -239,7 +239,7 @@ export function ExerciseCard({ exercise, editMode, onUpdate }: ExerciseCardProps
                   {editMode && (
                     <div className="mt-3">
                       <label className="text-xs text-gray-400 block mb-2">Quick Weight Update:</label>
-                      <div className="flex flex-wrap gap-2">
+                      <div className="flex flex-wrap gap-1 sm:gap-2">
                         {['Bodyweight', '25 lb', '30 lb', '35 lb', '40 lb', '45 lb', '50 lb', '55 lb', '60 lb', '65 lb', '70 lb', '75 lb', '80 lb'].map((weight) => (
                           <button
                             key={weight}
@@ -257,7 +257,7 @@ export function ExerciseCard({ exercise, editMode, onUpdate }: ExerciseCardProps
                   {editMode && (
                     <div className="mt-3">
                       <label className="text-xs text-gray-400 block mb-2">Quick Reps Update (all sets):</label>
-                      <div className="flex flex-wrap gap-2">
+                      <div className="flex flex-wrap gap-1 sm:gap-2">
                         {[6, 8, 10, 12, 15, 20].map((reps) => (
                           <button
                             key={reps}
@@ -328,21 +328,21 @@ export function ExerciseCard({ exercise, editMode, onUpdate }: ExerciseCardProps
               </div>
               
               <div>
-                <h5 className="font-semibold mb-3 text-accent-green">Progression Guide</h5>
+                <h5 className="font-semibold mb-3 text-accent-green text-sm sm:text-base">Progression Guide</h5>
                 <div className="bg-primary-900 p-3 rounded-lg">
-                  <p className="text-sm text-gray-300" data-testid={`progression-rule-${exercise.id}`}>
+                  <p className="text-xs sm:text-sm text-gray-300" data-testid={`progression-rule-${exercise.id}`}>
                     {exercise.progressionRule}
                   </p>
                 </div>
                 
                 <div className="mt-3 space-y-2">
-                  <div className="flex justify-between items-center text-sm">
+                  <div className="flex justify-between items-center text-xs sm:text-sm">
                     <span className="text-gray-400">Last workout:</span>
                     <span className="text-accent-green" data-testid={`last-workout-${exercise.id}`}>
                       {exercise.lastWorkout || 'No data'}
                     </span>
                   </div>
-                  <div className="flex justify-between items-center text-sm">
+                  <div className="flex justify-between items-center text-xs sm:text-sm">
                     <span className="text-gray-400">Progress:</span>
                     <span className="text-yellow-400" data-testid={`progress-status-${exercise.id}`}>
                       Ready to progress
@@ -354,13 +354,13 @@ export function ExerciseCard({ exercise, editMode, onUpdate }: ExerciseCardProps
             
             {/* Workout Log */}
             <div className="mt-6">
-              <h5 className="font-semibold mb-3 text-white">Today's Workout</h5>
+              <h5 className="font-semibold mb-3 text-white text-sm sm:text-base">Today's Workout</h5>
               <div className="bg-primary-900 p-3 rounded-lg mb-4">
                 <p className="text-xs text-gray-300">
                   <strong>Current Reps:</strong> Your target reps for each set • <strong>Completed Reps:</strong> What you actually completed
                 </p>
               </div>
-              <div className="grid grid-cols-4 gap-2 mb-2">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-2">
                 {Array.from({ length: localExercise.sets }, (_, setIndex) => (
                   <div key={setIndex} className="text-center">
                     <div className="text-xs text-gray-400 mb-1">Set {setIndex + 1}</div>
@@ -370,7 +370,7 @@ export function ExerciseCard({ exercise, editMode, onUpdate }: ExerciseCardProps
                         placeholder="Current Reps"
                         value={(localExercise.currentReps as any[])?.[setIndex] || ''}
                         onChange={(e) => handleCurrentRepsChange(setIndex, parseInt(e.target.value) || 0)}
-                        className="bg-primary-900 text-white px-2 py-1 rounded border border-gray-600 focus:border-accent-blue w-full text-center text-sm"
+                        className="bg-primary-900 text-white px-2 py-2 rounded border border-gray-600 focus:border-accent-blue w-full text-center text-sm"
                         data-testid={`current-reps-input-${exercise.id}-${setIndex}`}
                       />
                       <Input
@@ -378,7 +378,7 @@ export function ExerciseCard({ exercise, editMode, onUpdate }: ExerciseCardProps
                         placeholder="Completed Reps"
                         value={(localExercise.completedSets as any[])?.[setIndex]?.reps || ''}
                         onChange={(e) => handleSetComplete(setIndex, parseInt(e.target.value) || 0)}
-                        className="bg-primary-900 text-white px-2 py-1 rounded border border-gray-600 focus:border-accent-green w-full text-center text-sm"
+                        className="bg-primary-900 text-white px-2 py-2 rounded border border-gray-600 focus:border-accent-green w-full text-center text-sm"
                         data-testid={`completed-reps-input-${exercise.id}-${setIndex}`}
                       />
                     </div>
@@ -392,8 +392,8 @@ export function ExerciseCard({ exercise, editMode, onUpdate }: ExerciseCardProps
 
             {/* Workout Progress Summary */}
             <div className="mt-6 border-t border-gray-600 pt-4">
-              <h5 className="font-semibold mb-3 text-white">Progress Summary</h5>
-              <div className="grid grid-cols-2 gap-4 text-sm">
+              <h5 className="font-semibold mb-3 text-white text-sm sm:text-base">Progress Summary</h5>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 text-xs sm:text-sm">
                 <div>
                   <span className="text-gray-400">Sets Completed:</span>
                   <span className="ml-2 text-accent-green">

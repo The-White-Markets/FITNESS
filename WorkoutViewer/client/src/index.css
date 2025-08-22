@@ -174,3 +174,80 @@
 .hover\:bg-accent-green:hover {
   background-color: var(--accent-green);
 }
+
+/* Mobile-specific improvements */
+@media (max-width: 640px) {
+  /* Ensure proper touch targets */
+  button, [role="button"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Improve input field sizing on mobile */
+  input, select, textarea {
+    font-size: 16px; /* Prevents zoom on iOS */
+  }
+  
+  /* Better spacing for mobile cards */
+  .exercise-card {
+    margin-bottom: 1rem;
+  }
+  
+  /* Ensure badges don't overflow */
+  .badge {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+  }
+  
+  /* Improve grid layouts on mobile */
+  .grid {
+    gap: 0.75rem;
+  }
+  
+  /* Better button spacing on mobile */
+  .space-y-2 > * + * {
+    margin-top: 0.5rem;
+  }
+  
+  .space-y-3 > * + * {
+    margin-top: 0.75rem;
+  }
+  
+  /* Ensure text is readable on mobile */
+  .text-xs {
+    font-size: 0.75rem;
+    line-height: 1rem;
+  }
+  
+  .text-sm {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
+}
+
+/* Tablet improvements */
+@media (min-width: 641px) and (max-width: 1024px) {
+  /* Better spacing for tablet */
+  .p-4 {
+    padding: 1.25rem;
+  }
+  
+  .gap-4 {
+    gap: 1.25rem;
+  }
+  
+  /* Ensure buttons are properly sized */
+  button {
+    padding: 0.5rem 1rem;
+  }
+}
+
+/* Ensure proper viewport on mobile */
+@viewport {
+  width: device-width;
+  initial-scale: 1;
+  maximum-scale: 1;
+  user-scalable: no;
+}

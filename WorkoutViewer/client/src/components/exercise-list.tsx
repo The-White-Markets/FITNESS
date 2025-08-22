@@ -90,16 +90,16 @@ export function ExerciseList({ workoutDayId, searchQuery }: ExerciseListProps) {
 
   return (
     <section className="exercise-list">
-      <div className="flex justify-between items-center mb-6">
-        <h3 className="text-2xl font-bold flex items-center" data-testid="selected-day-title">
-          <CalendarDays className="text-accent-blue mr-3" />
-          <span>Day {workoutDay.dayNumber} - {workoutDay.title} ({workoutDay.focus})</span>
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 sm:mb-6 space-y-3 sm:space-y-0">
+        <h3 className="text-xl sm:text-2xl font-bold flex items-center" data-testid="selected-day-title">
+          <CalendarDays className="text-accent-blue mr-2 sm:mr-3 h-5 w-5 sm:h-6 sm:w-6" />
+          <span className="text-sm sm:text-base lg:text-lg">Day {workoutDay.dayNumber} - {workoutDay.title} ({workoutDay.focus})</span>
         </h3>
         
-        <div className="flex space-x-3">
+        <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3 w-full sm:w-auto">
           <Button 
             onClick={() => setEditMode(!editMode)}
-            className="bg-accent-blue hover:bg-blue-600 transition-colors"
+            className="bg-accent-blue hover:bg-blue-600 transition-colors w-full sm:w-auto"
             data-testid="toggle-edit-mode"
           >
             <Edit className="mr-2 h-4 w-4" />
@@ -108,7 +108,7 @@ export function ExerciseList({ workoutDayId, searchQuery }: ExerciseListProps) {
           
           <Button 
             onClick={handleSaveWorkout}
-            className="bg-accent-green hover:bg-green-600 transition-colors"
+            className="bg-accent-green hover:bg-green-600 transition-colors w-full sm:w-auto"
             data-testid="save-workout"
           >
             <Save className="mr-2 h-4 w-4" />
@@ -118,7 +118,7 @@ export function ExerciseList({ workoutDayId, searchQuery }: ExerciseListProps) {
       </div>
 
       {/* Search bar for exercises */}
-      <div className="relative mb-6 md:hidden">
+      <div className="relative mb-4 sm:mb-6 md:hidden">
         <Input
           type="text"
           placeholder="Search exercises in this day..."
@@ -131,9 +131,9 @@ export function ExerciseList({ workoutDayId, searchQuery }: ExerciseListProps) {
       </div>
 
       {/* Exercise Cards Grid */}
-      <div className="grid gap-6">
+      <div className="grid gap-4 sm:gap-6">
         {filteredExercises.length === 0 ? (
-          <div className="text-center py-12">
+          <div className="text-center py-8 sm:py-12">
             <p className="text-gray-400" data-testid="no-exercises-message">
               {searchQuery || exerciseSearchQuery ? "No exercises match your search." : "No exercises found for this day."}
             </p>
@@ -151,41 +151,41 @@ export function ExerciseList({ workoutDayId, searchQuery }: ExerciseListProps) {
       </div>
 
       {/* Progress Summary */}
-      <section className="mt-12 bg-primary-800 rounded-xl p-6" data-testid="progress-summary">
-        <h3 className="text-xl font-bold mb-4 flex items-center">
-          <i className="fas fa-chart-line text-accent-green mr-3"></i>
+      <section className="mt-8 sm:mt-12 bg-primary-800 rounded-xl p-4 sm:p-6" data-testid="progress-summary">
+        <h3 className="text-lg sm:text-xl font-bold mb-4 flex items-center">
+          <i className="fas fa-chart-line text-accent-green mr-2 sm:mr-3"></i>
           Workout Progress Summary
         </h3>
         
-        <div className="grid md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
           <div className="text-center">
-            <div className="text-3xl font-bold text-accent-blue mb-2" data-testid="total-exercises">
+            <div className="text-2xl sm:text-3xl font-bold text-accent-blue mb-2" data-testid="total-exercises">
               {workoutDay.exercises.length}
             </div>
-            <div className="text-gray-400">Total Exercises</div>
+            <div className="text-gray-400 text-sm sm:text-base">Total Exercises</div>
           </div>
           
           <div className="text-center">
-            <div className="text-3xl font-bold text-accent-green mb-2" data-testid="estimated-time">
+            <div className="text-2xl sm:text-3xl font-bold text-accent-green mb-2" data-testid="estimated-time">
               {getEstimatedTime(workoutDay.exercises.length)}
             </div>
-            <div className="text-gray-400">Minutes</div>
+            <div className="text-gray-400 text-sm sm:text-base">Minutes</div>
           </div>
           
           <div className="text-center">
-            <div className="text-3xl font-bold text-yellow-400 mb-2" data-testid="muscle-groups">
+            <div className="text-2xl sm:text-3xl font-bold text-yellow-400 mb-2" data-testid="muscle-groups">
               {getMuscleGroupCount(workoutDay)}
             </div>
-            <div className="text-gray-400">Muscle Groups</div>
+            <div className="text-gray-400 text-sm sm:text-base">Muscle Groups</div>
           </div>
         </div>
         
-        <div className="mt-6 flex justify-center">
+        <div className="mt-4 sm:mt-6 flex justify-center">
           <Button 
-            className="bg-accent-green hover:bg-green-600 px-8 py-3 text-lg font-semibold transition-colors"
+            className="bg-accent-green hover:bg-green-600 px-6 sm:px-8 py-2 sm:py-3 text-base sm:text-lg font-semibold transition-colors w-full sm:w-auto"
             data-testid="start-workout"
           >
-            <i className="fas fa-play mr-3"></i>
+            <i className="fas fa-play mr-2 sm:mr-3"></i>
             Start Workout
           </Button>
         </div>
