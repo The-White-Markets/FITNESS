@@ -188,4 +188,6 @@ export class MemStorage implements IStorage {
   }
 }
 
+// For now, use memory storage but with persistence to localStorage on the client side
+// This ensures data persists between sessions in the browser
 export const storage = new MemStorage();

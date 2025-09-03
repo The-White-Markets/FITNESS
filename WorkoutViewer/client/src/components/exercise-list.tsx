@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { CalendarDays, Edit, Save, Search } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
+import { usePersistentWorkouts } from "@/hooks/use-persistent-workouts";
 import type { WorkoutDayWithExercises, Exercise } from "@shared/schema";
 
 interface ExerciseListProps {
@@ -18,6 +19,7 @@ export function ExerciseList({ workoutDayId, searchQuery }: ExerciseListProps) {
   const [exerciseSearchQuery, setExerciseSearchQuery] = useState("");
   const { toast } = useToast();
   const queryClient = useQueryClient();
+  const { workoutData, updateExercise } = usePersistentWorkouts();
 
   const { data: workoutDay, isLoading } = useQuery<WorkoutDayWithExercises>({
     queryKey: ["/api/workout-days", workoutDayId],
@@ -77,13 +79,22 @@ export function ExerciseList({ workoutDayId, searchQuery }: ExerciseListProps) {
   });
 
   const handleExerciseUpdate = (exerciseId: string, updates: Partial<Exercise>) => {
+    // Update via API
     updateExerciseMutation.mutate({ exerciseId, updates });
+    
+    // Also save to localStorage for persistence
+    if (workoutDayId) {
+      updateExercise(workoutDayId, exerciseId, updates);
+    }
   };
 
   const handleSaveWorkout = () => {
+    // Invalidate queries to ensure fresh data is fetched
+    queryClient.invalidateQueries({ queryKey: ["/api/workout-days", workoutDayId] });
+    
     toast({
       title: "Workout Saved",
-      description: "All changes have been saved successfully.",
+      description: "All changes have been saved and will persist between sessions.",
     });
     setEditMode(false);
   };
