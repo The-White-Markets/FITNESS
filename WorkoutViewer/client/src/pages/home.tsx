@@ -41,7 +41,7 @@ export default function Home() {
               <div className="bg-accent-blue p-2 rounded-lg">
                 <Dumbbell className="text-white text-xl" />
               </div>
-              <h1 className="text-xl sm:text-2xl font-bold text-white" data-testid="app-title">FitTrack Pro</h1>
+              <h1 className="text-xl sm:text-2xl font-bold text-white" data-testid="app-title">The Best Workout Tracker</h1>
             </div>
             
             <div className="flex items-center space-x-2 sm:space-x-4 w-full sm:w-auto justify-center sm:justify-end">

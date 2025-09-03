@@ -28,19 +28,29 @@ export function ExerciseList({ workoutDayId, searchQuery }: ExerciseListProps) {
   const updateExerciseMutation = useMutation({
     mutationFn: async ({ exerciseId, updates }: { exerciseId: string; updates: Partial<Exercise> }) => {
       const response = await apiRequest("PATCH", `/api/exercises/${exerciseId}`, updates);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
       return response.json();
     },
-    onSuccess: () => {
+    onSuccess: (data, variables) => {
       queryClient.invalidateQueries({ queryKey: ["/api/workout-days", workoutDayId] });
+      
+      // Also save to localStorage for persistence
+      if (workoutDayId) {
+        updateExercise(workoutDayId, variables.exerciseId, variables.updates);
+      }
+      
       toast({
-        title: "Exercise Updated",
-        description: "Your exercise has been saved successfully.",
+        title: "✅ Exercise Saved Successfully",
+        description: "Your changes have been saved and will persist between sessions.",
       });
     },
-    onError: () => {
+    onError: (error, variables) => {
+      console.error("Failed to save exercise:", error);
       toast({
-        title: "Error",
-        description: "Failed to update exercise. Please try again.",
+        title: "❌ Save Failed",
+        description: `Failed to save exercise: ${error instanceof Error ? error.message : 'Unknown error'}. Please try again.`,
         variant: "destructive",
       });
     },
@@ -79,21 +89,27 @@ export function ExerciseList({ workoutDayId, searchQuery }: ExerciseListProps) {
   });
 
   const handleExerciseUpdate = (exerciseId: string, updates: Partial<Exercise>) => {
-    // Update via API
+    // Update via API (localStorage save is handled in the mutation's onSuccess)
     updateExerciseMutation.mutate({ exerciseId, updates });
-    
-    // Also save to localStorage for persistence
-    if (workoutDayId) {
-      updateExercise(workoutDayId, exerciseId, updates);
-    }
   };
 
   const handleSaveWorkout = () => {
+    // Check if there are any pending mutations
+    const isPending = updateExerciseMutation.isPending;
+    
+    if (isPending) {
+      toast({
+        title: "⏳ Saving...",
+        description: "Please wait while your changes are being saved.",
+      });
+      return;
+    }
+    
     // Invalidate queries to ensure fresh data is fetched
     queryClient.invalidateQueries({ queryKey: ["/api/workout-days", workoutDayId] });
     
     toast({
-      title: "Workout Saved",
+      title: "✅ Workout Saved Successfully",
       description: "All changes have been saved and will persist between sessions.",
     });
     setEditMode(false);
@@ -121,9 +137,10 @@ export function ExerciseList({ workoutDayId, searchQuery }: ExerciseListProps) {
             onClick={handleSaveWorkout}
             className="bg-accent-green hover:bg-green-600 transition-colors w-full sm:w-auto"
             data-testid="save-workout"
+            disabled={updateExerciseMutation.isPending}
           >
             <Save className="mr-2 h-4 w-4" />
-            Save Changes
+            {updateExerciseMutation.isPending ? "Saving..." : "Save Changes"}
           </Button>
         </div>
       </div>
